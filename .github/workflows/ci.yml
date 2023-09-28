@@ -1,0 +1,36 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+
+permissions:
+  actions: write
+  contents: write
+  deployments: read
+  id-token: write
+  pull-requests: read
+  repository-projects: read
+
+jobs:
+
+  ci:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: 'actions/checkout@v3'
+        with:
+          fetch-depth: 0
+      - name: Get branch name
+        id: branch-name
+        uses: tj-actions/branch-names@v7
+      - name: Set NX Shas
+        if: ${{ github.event_name == 'pull_request' }}
+        uses: nrwl/nx-set-shas@v3
+        with:
+          main-branch-name: ${{ steps.branch-name.outputs.base_ref_branch }}
+      - name: Set NX Shas
+        if: ${{ github.event_name == 'push' }}
+        uses: nrwl/nx-set-shas@v3
+        with:
+          main-branch-name: ${{ steps.branch-name.outputs.current_branch }}
