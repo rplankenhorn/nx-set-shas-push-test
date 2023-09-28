@@ -8,7 +8,6 @@ permissions:
   actions: read
   contents: read
   deployments: read
-  id-token: read
   pull-requests: read
   repository-projects: read
 
